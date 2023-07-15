@@ -214,7 +214,7 @@ end)
 AddEventHandler('esx:restoreLoadout', function()
 	ESX.SetPlayerData('ped', PlayerPedId())
 
-	if not Config.OxInventory then
+	if not Config.OxInventory and not Config.QSInventory then
 		local ammoTypes = {}
 		RemoveAllPedWeapons(ESX.PlayerData.ped, true)
 
