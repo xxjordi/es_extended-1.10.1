@@ -29,6 +29,11 @@ if GetResourceState('ox_inventory') ~= 'missing' then
 	SetConvarReplicated('inventory:weight', Config.MaxWeight * 1000)
 end
 
+if GetResourceState('qs-inventory') ~= 'missing' then
+  Config.QSInventory = true
+  Config.PlayerFunctionOverride = 'QSInventory'
+end
+
 local function StartDBSync()
 	CreateThread(function()
 		while true do
@@ -40,6 +45,9 @@ end
 
 MySQL.ready(function()
 	Core.DatabaseConnected = true
+  if Config.QSInventory then
+    ESX.Items = exports['qs-inventory']:GetItemList()
+  end
 	if not Config.OxInventory then
 		local items = MySQL.query.await('SELECT * FROM items')
 		for _, v in ipairs(items) do
